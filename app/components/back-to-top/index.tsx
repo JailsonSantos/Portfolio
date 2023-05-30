@@ -13,6 +13,7 @@ export const BackToTop = () => {
 
   const handleScroll = useCallback(() => {
     if (!show && window.scrollY > 500) setShow(true)
+
     if (show && window.scrollY <= 500) setShow(false)
   }, [show])
 

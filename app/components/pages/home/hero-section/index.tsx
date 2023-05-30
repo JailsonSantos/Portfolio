@@ -1,32 +1,18 @@
 'use client'
 
-import { Button } from "@/app/components/button"
-import { TechBadge } from "@/app/components/tech-badge"
 import Image from "next/image"
+import { Button } from "@/app/components/button"
 import { HiArrowNarrowRight } from "react-icons/hi"
-import { TbBrandGithub, TbBrandLinkedin, TbBrandWhatsapp, TbBrandYoutube } from "react-icons/tb"
+import { CMSIcon } from "@/app/components/cms-icon"
+import { HomePageInfo } from "@/app/types/page-info"
+import { RichText } from "@/app/components/rich-text"
+import { TechBadge } from "@/app/components/tech-badge"
 
-const MOCK_CONTACTS = [
-  {
-    url: "https://github.com.br",
-    icon: <TbBrandGithub />
-  },
-  {
-    url: "https://linkedIn.com.br",
-    icon: <TbBrandLinkedin />
-  }
-  ,
-  {
-    url: "https://youtube.com.br",
-    icon: <TbBrandYoutube />
-  },
-  {
-    url: "https://whatsApp.com.br",
-    icon: <TbBrandWhatsapp />
-  }
-]
+type HeroSectionProps = {
+  homeInfo: HomePageInfo
+}
 
-export const HeroSection = () => {
+export const HeroSection = ({ homeInfo }: HeroSectionProps) => {
   const handleContact = () => {
     const contactSection = document.querySelector('#contact');
 
@@ -41,14 +27,13 @@ export const HeroSection = () => {
         <div className="w-full lg:max-w-[530px]">
           <p className="font-mono text-emerald-400">Olá, meu nome é</p>
           <h2 className="text-4xl font-medium mt-2 ">Jailson Lins</h2>
-          <p className="text-gray-400 my-6 text-sm sm:text-base text-justify">
-            Sou Desenvolvedor FullStack, utilizando as tecnologias ReactJS no FrontEnd e NodeJS no BackEnd.
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis aperiam quae iure ipsum, quos accusamus? Harum soluta, laudantium neque voluptate quo doloremque beatae illo repellendus iure reprehenderit porro? Doloribus, omnis.
-          </p>
+          <div className="text-gray-400 my-6 text-sm sm:text-base text-justify">
+            <RichText content={homeInfo.introduction.raw} />
+          </div>
 
           <div className="flex flex-wrap gap-x-2 gap-y-3 lg:max-w-[340px]">
-            {Array.from({ length: 7 }).map((_, index) => (
-              <TechBadge name="NextJS" />
+            {homeInfo.technologies.map((tech) => (
+              <TechBadge name={tech.name} />
             ))}
           </div>
 
@@ -59,13 +44,13 @@ export const HeroSection = () => {
             </Button>
 
             <div className="text-2xl text-gray-600 flex items-center h-20 gap-3">
-              {MOCK_CONTACTS.map((contact, index) => (
+              {homeInfo.socials.map((contact, index) => (
                 <a href={contact.url}
                   key={`contact-${index}`}
                   target="_blank"
                   className="hover:text-gray-100 transition-colors"
                 >
-                  {contact.icon}
+                  <CMSIcon icon={contact.iconSvg} />
                 </a>
               ))}
             </div>
@@ -75,7 +60,7 @@ export const HeroSection = () => {
         <Image
           width={420}
           height={404}
-          src="/images/profile-pic.png"
+          src={homeInfo.profilePicture?.url}
           alt="Foto de Perfil do Jailson Lins"
           className="w-[300px] h-[300px] lg:w-[420px] lg:h-[404px] mb-6 lg:mb-0 shadow-2xl rounded-lg object-cover"
         />
